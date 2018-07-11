@@ -1,3 +1,9 @@
+var teaser = function(p1, p2){
+  // edit me as needed
+  return "I helped GamesWithWords.org train their algorithm to guess which English I speak (http://www.gameswithwords.org/WhichEnglish/). It guessed that I speak " + p1 + " and that my native language is " + p2 + "Which English do you speak?";
+}
+var subjectline = 'Mapping English grammar around the world.'
+var quizURL = 'http://www.gameswithwords.org/WhichEnglish/' //URL to quiz
 
 function definePlugin (){
 var plugin = {};
@@ -98,7 +104,58 @@ buttonDiv.appendChild(button);
 button.innerHTML=trial.buttonText;
 button.addEventListener('click', () => {jsPsych.finishTrial({})});
 
-}
+///create mail button
+var mailDiv = document.createElement('div');
+mailDiv.setAttribute("height", "50");
+mailDiv.setAttribute("width", "50");
+var mailimg = document.createElement('img')
+mailimg.src = 'mail.png' //for quick install, will want to do something better with URLs
+mailimg.setAttribute("height", "50");
+mailimg.setAttribute("width", "50");
+var maillink = document.createElement('a');
+maillink.href = 'mailto:?subject=' + subjectline + '&amp;body=' + teaser(prediction1, prediction2);
+maillink.appendChild(mailimg);
+mailDiv.appendChild(maillink);
+
+///create Facebook link
+var fbDiv = document.createElement('div');
+fbDiv.setAttribute("height", "50");
+fbDiv.setAttribute("width", "50");
+var fbimg = document.createElement('img')
+fbimg.src = 'fb.png' //for quick install, will want to do something better with URLs
+fbimg.setAttribute("height", "50");
+fbimg.setAttribute("width", "50");
+var fblink = document.createElement('a');
+fblink.href = 'https://www.facebook.com/sharer.php?u='+quizURL
+fblink.appendChild(fbimg);
+fbDiv.appendChild(fblink);
+
+///create twitter link
+var twitterDiv = document.createElement('div');
+twitterDiv.setAttribute("height", "50");
+twitterDiv.setAttribute("width", "50");
+var twitterimg = document.createElement('img')
+twitterimg.src = 'twitter.png' //for quick install, will want to do something better with URLs
+twitterimg.setAttribute("height", "50");
+twitterimg.setAttribute("width", "50");
+var twitterlink = document.createElement('a');
+twitterlink.href = 'https://twitter.com/intent/tweet?url=' + quizURL + '&text=' + teaser(prediction1, prediction2);
+twitterlink.appendChild(twitterimg);
+twitterDiv.appendChild(twitterlink);
+
+///create weibo link
+var weiboDiv = document.createElement('div');
+weiboDiv.setAttribute("height", "50");
+weiboDiv.setAttribute("width", "50");
+var weiboimg = document.createElement('img')
+weiboimg.src = 'weibo.png' //for quick install, will want to do something better with URLs
+weiboimg.setAttribute("height", "50");
+weiboimg.setAttribute("width", "50");
+var weibolink = document.createElement('a');
+weibolink.href = 'http://service.weibo.com/share/share.php?text=%E6%B5%8B%E8%AF%95&title=' teaser(prediction1, prediction2) + '&url=' + quizURL;
+weibolink.appendChild(weiboimg);
+weiboDiv.appendChild(weibolink);
+
 return plugin;
 }
 
