@@ -4,7 +4,7 @@ var plugin = {};
 
 plugin.info= {
 	name: 'display-prediction',
-	description:'This plugin displays a prediction in a visually apealing way!',
+	description:'This plugin displays a prediction in a visually appealing way!',
 	parameters: {
   prompt1: {
         type: [jsPsych.plugins.parameterType.STRING],
