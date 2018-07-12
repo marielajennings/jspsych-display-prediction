@@ -1,9 +1,3 @@
-var teaser = function(p1, p2){
-  // edit me as needed
-  return "I helped GamesWithWords.org train their algorithm to guess which English I speak (http://www.gameswithwords.org/WhichEnglish/). It guessed that I speak " + p1 + " and that my native language is " + p2 + "Which English do you speak?";
-}
-var subjectline = 'Mapping English grammar around the world.'
-var quizURL = 'http://www.gameswithwords.org/WhichEnglish/' //URL to quiz
 
 function definePlugin (){
 var plugin = {};
@@ -35,7 +29,37 @@ plugin.info= {
         default: undefined,
         no_function: false,
         description: 'This is the second prediction to be displayed, in the example case this is the participant\'s dialect'
-      }
+      },
+      quizURL: {
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: undefined,
+        no_function: false,
+        description: 'URL to be used with social media post'
+      },
+      subjectLine: {
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: undefined,
+        no_function: false,
+        description: 'Subject line for an email (something to do with the quiz the participant just took)'
+      },
+      teaserPart1: {
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: undefined,
+        no_function: false,
+        description: 'teaser about your results part 1'
+      },
+      teaserPart2: {
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: undefined,
+        no_function: false,
+        description: 'teaser about your results part 2'
+      },
+      teaserPart3: {
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: undefined,
+        no_function: false,
+        description: 'teaser about your results part 3'
+      },
 
 	}
 
@@ -47,6 +71,21 @@ plugin.trial= function (display_element, trial) {
       return arr.join(separator = '-');
     }
 
+
+var teaserDiv = document.createElement("div")
+display_element.appendChild(teaserDiv)
+// var teaserP = document.createElement("p")
+// teaserDiv.appendChild(teaserP)
+
+
+
+
+// teaserDiv.innerHTML+=''+trial.teaserPart1+''+trial.prediction1[0]''+trial.teaserPart2''+trial.prediction2[0]''+trial.teaserPart3''
+
+
+teaserDiv.innerHTML +='<p style="text-align:left;font-family:Open Sans;">'+trial.teaserPart1+''+trial.prediction1[0]+''+trial.teaserPart2+''+trial.prediction2[0]+''+trial.teaserPart3+'</p>';
+console.log(trial.prediction1[0])
+
  //trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial); (this is only useful for jsPsych 5, if you wanted to use this plugin with it)
 var prediction1 = trial.prediction1
 var prediction2 = trial.prediction2
@@ -56,6 +95,7 @@ var mainDiv = document.createElement("div")
 display_element.appendChild(mainDiv)
 
 var table = document.createElement("table")
+table.setAttribute("style", "border-collapse:separate;border-spacing:25px;")
 
 mainDiv.appendChild(table);
 table.innerHTML += '<tr><th id="language">'+trial.prompt1+'&nbsp;&nbsp;&nbsp;</th><th id="dialect">'+trial.prompt2+'</th></tr>';
@@ -65,11 +105,11 @@ var lengthToUse
 
 
 var thStyleLang = document.getElementById("language")
-thStyleLang.setAttribute("style", "padding:8px;text-align:left;font-size:25px")
+thStyleLang.setAttribute("style", "padding:8px;text-align:left;font-size:15px")
 
 
 var thStyleDial = document.getElementById("dialect")
-thStyleDial.setAttribute("style", "padding:8px;text-align:left;font-size:25px")
+thStyleDial.setAttribute("style", "padding:8px;text-align:left;font-size:15px")
 
 
 
@@ -84,7 +124,7 @@ if (prediction1.length>prediction2.length){
 
  for (var i = 0; i < lengthToUse; i++) {
   if (prediction1[i] && prediction2[i]){
-table.innerHTML += '<tr><td id="language" style="padding:8px;text-align:left;font-size:17px">'+(i+1)+'. '+prediction1[i]+'</td><td id="dialect" style="padding:8px;text-align:left;font-size:17px">'+(i+1)+'. '+prediction2[i]+'</td></tr>'
+table.innerHTML += '<tr><td id="language" style="padding:8px;text-align:left;font-size:17px; ">'+(i+1)+'. '+prediction1[i]+'</td><td id="dialect" style="padding:8px;text-align:left;font-size:17px">'+(i+1)+'. '+prediction2[i]+'</td></tr>'
 } else if (prediction1[i] && !prediction2[i])
 {
   table.innerHTML += '<tr><td id="language" style="padding:8px;text-align:left;font-size:17px">'+(i+1)+'. '+prediction1[i]+'</td></tr>'
@@ -104,58 +144,14 @@ buttonDiv.appendChild(button);
 button.innerHTML=trial.buttonText;
 button.addEventListener('click', () => {jsPsych.finishTrial({})});
 
-///create mail button
-var mailDiv = document.createElement('div');
-mailDiv.setAttribute("height", "50");
-mailDiv.setAttribute("width", "50");
-var mailimg = document.createElement('img')
-mailimg.src = 'mail.png' //for quick install, will want to do something better with URLs
-mailimg.setAttribute("height", "50");
-mailimg.setAttribute("width", "50");
-var maillink = document.createElement('a');
-maillink.href = 'mailto:?subject=' + subjectline + '&amp;body=' + teaser(prediction1, prediction2);
-maillink.appendChild(mailimg);
-mailDiv.appendChild(maillink);
 
-///create Facebook link
-var fbDiv = document.createElement('div');
-fbDiv.setAttribute("height", "50");
-fbDiv.setAttribute("width", "50");
-var fbimg = document.createElement('img')
-fbimg.src = 'fb.png' //for quick install, will want to do something better with URLs
-fbimg.setAttribute("height", "50");
-fbimg.setAttribute("width", "50");
-var fblink = document.createElement('a');
-fblink.href = 'https://www.facebook.com/sharer.php?u='+quizURL
-fblink.appendChild(fbimg);
-fbDiv.appendChild(fblink);
 
-///create twitter link
-var twitterDiv = document.createElement('div');
-twitterDiv.setAttribute("height", "50");
-twitterDiv.setAttribute("width", "50");
-var twitterimg = document.createElement('img')
-twitterimg.src = 'twitter.png' //for quick install, will want to do something better with URLs
-twitterimg.setAttribute("height", "50");
-twitterimg.setAttribute("width", "50");
-var twitterlink = document.createElement('a');
-twitterlink.href = 'https://twitter.com/intent/tweet?url=' + quizURL + '&text=' + teaser(prediction1, prediction2);
-twitterlink.appendChild(twitterimg);
-twitterDiv.appendChild(twitterlink);
 
-///create weibo link
-var weiboDiv = document.createElement('div');
-weiboDiv.setAttribute("height", "50");
-weiboDiv.setAttribute("width", "50");
-var weiboimg = document.createElement('img')
-weiboimg.src = 'weibo.png' //for quick install, will want to do something better with URLs
-weiboimg.setAttribute("height", "50");
-weiboimg.setAttribute("width", "50");
-var weibolink = document.createElement('a');
-weibolink.href = 'http://service.weibo.com/share/share.php?text=%E6%B5%8B%E8%AF%95&title=' teaser(prediction1, prediction2) + '&url=' + quizURL;
-weibolink.appendChild(weiboimg);
-weiboDiv.appendChild(weibolink);
+var facebookDiv = document.createElement('div')
+facebookDiv.innerHTML += '<div class="fb-share-button" data-href="https://gameswithwords.org/quizzes" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fgameswithwords.org%2Fquizzes&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>'
+display_element.appendChild(facebookDiv)
 
+}
 return plugin;
 }
 
