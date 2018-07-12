@@ -44,3 +44,9 @@ var test = {
 
 produces:
 
+
+![alt text][logo]
+[logo]: https://github.com/marielajennings/jspsych-display-prediction/raw/master/pic1.png "Logo Title Text 2"
+
+
+
