@@ -94,6 +94,7 @@ display_element.appendChild(teaserDiv)
 teaserDiv.innerHTML +='<p style="text-align:left;font-family:Open Sans;">'+trial.teaserPart1+''+trial.prediction1[0]+''+trial.teaserPart2+''+trial.prediction2[0]+''+trial.teaserPart3+'</p>';
 }
 
+var teaser = ''+trial.teaserPart1+''+trial.prediction1[0]+''+trial.teaserPart2+''+trial.prediction2[0]+''+trial.teaserPart3+'';
  //trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial); (this is only useful for jsPsych 5, if you wanted to use this plugin with it)
 var prediction1 = trial.prediction1
 var prediction2 = trial.prediction2
@@ -103,7 +104,7 @@ var mainDiv = document.createElement("div")
 display_element.appendChild(mainDiv)
 
 var table = document.createElement("table")
-table.setAttribute("style", "border-collapse:separate;border-spacing:25px;")
+table.setAttribute("style", "border-collapse:separate;border-spacing:25px;margin: 0 auto;")
 
 mainDiv.appendChild(table);
 table.innerHTML += '<tr><th id="language">'+trial.prompt1+'&nbsp;&nbsp;&nbsp;</th><th id="dialect">'+trial.prompt2+'</th></tr>';
@@ -140,6 +141,30 @@ table.innerHTML += '<tr><td id="language" style="padding:8px;text-align:left;fon
 }
 }
 
+
+
+
+///create mail button
+var mailDiv = document.createElement('div');
+mailDiv.setAttribute("height", "50");
+mailDiv.setAttribute("width", "50");
+
+var mailTo = 'mailto:?body='+teaser+'&subject='+trial.subjectLine+''
+
+mailDiv.innerHTML+='<a href="mailto:?body='+teaser+'&subject='+trial.subjectLine+'" class="button">Email your results!</a>'
+
+display_element.appendChild(mailDiv)
+
+
+
+
+
+
+
+
+
+
+
 var buttonDiv = document.createElement('div')
 buttonDiv.innerHTML+='<br><br><br>'
 display_element.appendChild(buttonDiv)
@@ -150,18 +175,8 @@ buttonDiv.appendChild(button);
 button.innerHTML=trial.buttonText;
 button.addEventListener('click', () => {jsPsych.finishTrial({})});
 
-// ///create mail button
-// var mailDiv = document.createElement('div');
-// mailDiv.setAttribute("height", "50");
-// mailDiv.setAttribute("width", "50");
-// var mailimg = document.createElement('img')
-// mailimg.src = 'mail.png' //for quick install, will want to do something better with URLs
-// mailimg.setAttribute("height", "50");
-// mailimg.setAttribute("width", "50");
-// var maillink = document.createElement('a');
-// maillink.href = 'mailto:?subject=' + subjectline + '&amp;body=' + teaser(prediction1, prediction2);
-// maillink.appendChild(mailimg);
-// mailDiv.appendChild(maillink);
+
+
 
 // ///create Facebook link
 // var fbDiv = document.createElement('div');
