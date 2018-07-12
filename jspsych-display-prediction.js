@@ -56,6 +56,16 @@ plugin.info= {
         default: 'Finish',
         description: 'Button label'
       },
+  socialSharing: {
+        type: [jsPsych.plugins.parameterType.BOOL],
+        default: undefined,
+        description: 'Whether the plugin will lead to demographic questions or show social media sharing buttons...'
+      },
+  encourageDemographics:{
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: '',
+        description: 'Text to encourage participants to answer demographic questions.'
+      },
 	}
 
 }
@@ -66,23 +76,6 @@ plugin.trial= function (display_element, trial) {
       return arr.join(separator = '-');
     }
 
-//trial defaults
-
-    // trial.teaserPart1 = typeof trial.teaserPart1 == 'undefined' ? '' : trial.teaserPart1;
-    // trial.teaserPart2 = typeof trial.teaserPart2 == 'undefined' ? '' : trial.teaserPart2;
-    // trial.teaserPart3 = typeof trial.teaserPart3 == 'undefined' ? '' : trial.teaserPart3;
-
-
-
-    // trial.superq = typeof trial.superq == 'undefined' ? false : trial.superq;
-    // trial.required =
-    //   typeof trial.required == 'undefined' ? null : trial.required;
-    // trial.force_correct =
-    //   typeof trial.force_correct == 'undefined' ? true : trial.force_correct;
-    // trial.horizontal =
-    //   typeof trial.horizontal == 'undefined' ? false : trial.horizontal;
-    // trial.alignment = 'left';
-
 
 
 if (trial.teaserPart1 != '' || trial.teaserPart2 != '' || trial.teaserPart3!= ''){
@@ -91,7 +84,7 @@ if (trial.teaserPart1 != '' || trial.teaserPart2 != '' || trial.teaserPart3!= ''
 var teaserDiv = document.createElement("div")
 display_element.appendChild(teaserDiv)
 
-teaserDiv.innerHTML +='<p style="text-align:left;font-family:Open Sans;">'+trial.teaserPart1+''+trial.prediction1[0]+''+trial.teaserPart2+''+trial.prediction2[0]+''+trial.teaserPart3+'</p>';
+teaserDiv.innerHTML +='<p style="font-family:Arial;">'+trial.teaserPart1+''+trial.prediction1[0]+''+trial.teaserPart2+''+trial.prediction2[0]+''+trial.teaserPart3+'</p>';
 }
 
 var teaser = ''+trial.teaserPart1+''+trial.prediction1[0]+''+trial.teaserPart2+''+trial.prediction2[0]+''+trial.teaserPart3+'';
@@ -141,7 +134,7 @@ table.innerHTML += '<tr><td id="language" style="padding:8px;text-align:left;fon
 }
 }
 
-
+if (trial.socialSharing){
 
 
 ///create mail button
@@ -154,15 +147,15 @@ var mailTo = 'mailto:?body='+teaser+'&subject='+trial.subjectLine+''
 mailDiv.innerHTML+='<a href="mailto:?body='+teaser+'&subject='+trial.subjectLine+'" class="button">Email your results!</a>'
 
 display_element.appendChild(mailDiv)
+} else {
 
 
+var encourageDemographics = document.createElement('div')
+encourageDemographics.innerHTML  += '<p style="text-align:center"> <strong>'+trial.encourageDemographics+'</strong></p> '
+display_element.appendChild(encourageDemographics)
 
 
-
-
-
-
-
+}
 
 
 var buttonDiv = document.createElement('div')
