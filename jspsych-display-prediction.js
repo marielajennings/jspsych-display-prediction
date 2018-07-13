@@ -66,6 +66,26 @@ plugin.info= {
         default: '',
         description: 'Text to encourage participants to answer demographic questions.'
       },
+  mailButtonImg:{
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: '',
+        description: 'Path to image to be used for the mail button.'
+      },
+  fbButtonImg:{
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: '',
+        description: 'Path to image to be used for the Facebook button.'
+      },
+   twitterButtonImg:{
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: '',
+        description: 'Path to image to be used for the Twitter button.'
+      },
+   weiboButtonImg:{
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: '',
+        description: 'Path to image to be used for the Weibo button.'
+      }
 	}
 
 }
@@ -137,18 +157,44 @@ table.innerHTML += '<tr><td id="language" style="padding:8px;text-align:left;fon
 if (trial.socialSharing){
 
 
-///create mail button
-var mailDiv = document.createElement('div');
-mailDiv.setAttribute("height", "50");
-mailDiv.setAttribute("width", "50");
+///create mail button, still needs img
+var socialDiv = document.createElement('div');
 
-var mailTo = 'mailto:?body='+teaser+'&subject='+trial.subjectLine+''
+//var mailTo = 'mailto:?body='+teaser+'&subject='+trial.subjectLine+''
 
-mailDiv.innerHTML+='<a href="mailto:?body='+teaser+'&subject='+trial.subjectLine+'" class="button">Email your results!</a>'
+socialDiv.innerHTML+='<a href="mailto:?body='+teaser+'&subject='+trial.subjectLine+'" class="button"><img src='+trial.mailButtonImg+' width="50" height="50" /></a>'
+display_element.appendChild(socialDiv)
 
-display_element.appendChild(mailDiv)
+
+var fbimg = document.createElement('img')
+fbimg.src = trial.fbButtonImg 
+fbimg.setAttribute("height", "50");
+fbimg.setAttribute("width", "50");
+var fblink = document.createElement('a');
+fblink.href = 'https://www.facebook.com/sharer.php?u='+trial.quizURL
+fblink.appendChild(fbimg);
+socialDiv.appendChild(fblink);
+
+var twitterimg = document.createElement('img')
+twitterimg.src = trial.twitterButtonImg 
+twitterimg.setAttribute("height", "50");
+twitterimg.setAttribute("width", "50");
+var twitterlink = document.createElement('a');
+twitterlink.href = 'https://twitter.com/intent/tweet?url='+trial.quizURL+'&text='+teaser;
+twitterlink.appendChild(twitterimg);
+socialDiv.appendChild(twitterlink);
+
+var weiboimg = document.createElement('img')
+weiboimg.src = trial.weiboButtonImg 
+weiboimg.setAttribute("height", "50");
+weiboimg.setAttribute("width", "50");
+var weibolink = document.createElement('a');
+weibolink.href = 'http://service.weibo.com/share/share.php?text=%E6%B5%8B%E8%AF%95&title=' + teaser +'&url=' + trial.quizURL;
+weibolink.appendChild(weiboimg);
+socialDiv.appendChild(weibolink);
+
+
 } else {
-
 
 var encourageDemographics = document.createElement('div')
 encourageDemographics.innerHTML  += '<p style="text-align:center"> <strong>'+trial.encourageDemographics+'</strong></p> '
@@ -171,44 +217,10 @@ button.addEventListener('click', () => {jsPsych.finishTrial({})});
 
 
 
-// ///create Facebook link
-// var fbDiv = document.createElement('div');
-// fbDiv.setAttribute("height", "50");
-// fbDiv.setAttribute("width", "50");
-// var fbimg = document.createElement('img')
-// fbimg.src = 'fb.png' //for quick install, will want to do something better with URLs
-// fbimg.setAttribute("height", "50");
-// fbimg.setAttribute("width", "50");
-// var fblink = document.createElement('a');
-// fblink.href = 'https://www.facebook.com/sharer.php?u='+quizURL
-// fblink.appendChild(fbimg);
-// fbDiv.appendChild(fblink);
 
-// ///create twitter link
-// var twitterDiv = document.createElement('div');
-// twitterDiv.setAttribute("height", "50");
-// twitterDiv.setAttribute("width", "50");
-// var twitterimg = document.createElement('img')
-// twitterimg.src = 'twitter.png' //for quick install, will want to do something better with URLs
-// twitterimg.setAttribute("height", "50");
-// twitterimg.setAttribute("width", "50");
-// var twitterlink = document.createElement('a');
-// twitterlink.href = 'https://twitter.com/intent/tweet?url=' + quizURL + '&text=' + teaser(prediction1, prediction2);
-// twitterlink.appendChild(twitterimg);
-// twitterDiv.appendChild(twitterlink);
 
-// ///create weibo link
-// var weiboDiv = document.createElement('div');
-// weiboDiv.setAttribute("height", "50");
-// weiboDiv.setAttribute("width", "50");
-// var weiboimg = document.createElement('img')
-// weiboimg.src = 'weibo.png' //for quick install, will want to do something better with URLs
-// weiboimg.setAttribute("height", "50");
-// weiboimg.setAttribute("width", "50");
-// var weibolink = document.createElement('a');
-// weibolink.href = 'http://service.weibo.com/share/share.php?text=%E6%B5%8B%E8%AF%95&title=' teaser(prediction1, prediction2) + '&url=' + quizURL;
-// weibolink.appendChild(weiboimg);
-// weiboDiv.appendChild(weibolink);
+
+
 
 
 }
