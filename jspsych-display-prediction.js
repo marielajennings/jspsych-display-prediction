@@ -56,6 +56,36 @@ plugin.info= {
         default: 'Finish',
         description: 'Button label'
       },
+  socialSharing: {
+        type: [jsPsych.plugins.parameterType.BOOL],
+        default: undefined,
+        description: 'Whether the plugin will lead to demographic questions or show social media sharing buttons...'
+      },
+  encourageDemographics:{
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: '',
+        description: 'Text to encourage participants to answer demographic questions.'
+      },
+  mailButtonImg:{
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: '',
+        description: 'Path to image to be used for the mail button.'
+      },
+  fbButtonImg:{
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: '',
+        description: 'Path to image to be used for the Facebook button.'
+      },
+   twitterButtonImg:{
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: '',
+        description: 'Path to image to be used for the Twitter button.'
+      },
+   weiboButtonImg:{
+        type: [jsPsych.plugins.parameterType.STRING],
+        default: '',
+        description: 'Path to image to be used for the Weibo button.'
+      }
 	}
 
 }
@@ -66,23 +96,6 @@ plugin.trial= function (display_element, trial) {
       return arr.join(separator = '-');
     }
 
-//trial defaults
-
-    // trial.teaserPart1 = typeof trial.teaserPart1 == 'undefined' ? '' : trial.teaserPart1;
-    // trial.teaserPart2 = typeof trial.teaserPart2 == 'undefined' ? '' : trial.teaserPart2;
-    // trial.teaserPart3 = typeof trial.teaserPart3 == 'undefined' ? '' : trial.teaserPart3;
-
-
-
-    // trial.superq = typeof trial.superq == 'undefined' ? false : trial.superq;
-    // trial.required =
-    //   typeof trial.required == 'undefined' ? null : trial.required;
-    // trial.force_correct =
-    //   typeof trial.force_correct == 'undefined' ? true : trial.force_correct;
-    // trial.horizontal =
-    //   typeof trial.horizontal == 'undefined' ? false : trial.horizontal;
-    // trial.alignment = 'left';
-
 
 
 if (trial.teaserPart1 != '' || trial.teaserPart2 != '' || trial.teaserPart3!= ''){
@@ -91,9 +104,10 @@ if (trial.teaserPart1 != '' || trial.teaserPart2 != '' || trial.teaserPart3!= ''
 var teaserDiv = document.createElement("div")
 display_element.appendChild(teaserDiv)
 
-teaserDiv.innerHTML +='<p style="text-align:left;font-family:Open Sans;">'+trial.teaserPart1+''+trial.prediction1[0]+''+trial.teaserPart2+''+trial.prediction2[0]+''+trial.teaserPart3+'</p>';
+teaserDiv.innerHTML +='<p style="font-family:Arial;">'+trial.teaserPart1+''+trial.prediction1[0]+''+trial.teaserPart2+''+trial.prediction2[0]+''+trial.teaserPart3+'</p>';
 }
 
+var teaser = ''+trial.teaserPart1+''+trial.prediction1[0]+''+trial.teaserPart2+''+trial.prediction2[0]+''+trial.teaserPart3+'';
  //trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial); (this is only useful for jsPsych 5, if you wanted to use this plugin with it)
 var prediction1 = trial.prediction1
 var prediction2 = trial.prediction2
@@ -103,7 +117,7 @@ var mainDiv = document.createElement("div")
 display_element.appendChild(mainDiv)
 
 var table = document.createElement("table")
-table.setAttribute("style", "border-collapse:separate;border-spacing:25px;")
+table.setAttribute("style", "border-collapse:separate;border-spacing:25px;margin: 0 auto;")
 
 mainDiv.appendChild(table);
 table.innerHTML += '<tr><th id="language">'+trial.prompt1+'&nbsp;&nbsp;&nbsp;</th><th id="dialect">'+trial.prompt2+'</th></tr>';
@@ -140,6 +154,56 @@ table.innerHTML += '<tr><td id="language" style="padding:8px;text-align:left;fon
 }
 }
 
+if (trial.socialSharing){
+
+
+///create mail button, still needs img
+var socialDiv = document.createElement('div');
+
+//var mailTo = 'mailto:?body='+teaser+'&subject='+trial.subjectLine+''
+
+socialDiv.innerHTML+='<a href="mailto:?body='+teaser+'&subject='+trial.subjectLine+'" class="button"><img src='+trial.mailButtonImg+' width="50" height="50" /></a>'
+display_element.appendChild(socialDiv)
+
+
+var fbimg = document.createElement('img')
+fbimg.src = trial.fbButtonImg 
+fbimg.setAttribute("height", "50");
+fbimg.setAttribute("width", "50");
+var fblink = document.createElement('a');
+fblink.href = 'https://www.facebook.com/sharer.php?u='+trial.quizURL
+fblink.appendChild(fbimg);
+socialDiv.appendChild(fblink);
+
+var twitterimg = document.createElement('img')
+twitterimg.src = trial.twitterButtonImg 
+twitterimg.setAttribute("height", "50");
+twitterimg.setAttribute("width", "50");
+var twitterlink = document.createElement('a');
+twitterlink.href = 'https://twitter.com/intent/tweet?url='+trial.quizURL+'&text='+teaser;
+twitterlink.appendChild(twitterimg);
+socialDiv.appendChild(twitterlink);
+
+var weiboimg = document.createElement('img')
+weiboimg.src = trial.weiboButtonImg 
+weiboimg.setAttribute("height", "50");
+weiboimg.setAttribute("width", "50");
+var weibolink = document.createElement('a');
+weibolink.href = 'http://service.weibo.com/share/share.php?text=%E6%B5%8B%E8%AF%95&title=' + teaser +'&url=' + trial.quizURL;
+weibolink.appendChild(weiboimg);
+socialDiv.appendChild(weibolink);
+
+
+} else {
+
+var encourageDemographics = document.createElement('div')
+encourageDemographics.innerHTML  += '<p style="text-align:center"> <strong>'+trial.encourageDemographics+'</strong></p> '
+display_element.appendChild(encourageDemographics)
+
+
+}
+
+
 var buttonDiv = document.createElement('div')
 buttonDiv.innerHTML+='<br><br><br>'
 display_element.appendChild(buttonDiv)
@@ -150,57 +214,13 @@ buttonDiv.appendChild(button);
 button.innerHTML=trial.buttonText;
 button.addEventListener('click', () => {jsPsych.finishTrial({})});
 
-// ///create mail button
-// var mailDiv = document.createElement('div');
-// mailDiv.setAttribute("height", "50");
-// mailDiv.setAttribute("width", "50");
-// var mailimg = document.createElement('img')
-// mailimg.src = 'mail.png' //for quick install, will want to do something better with URLs
-// mailimg.setAttribute("height", "50");
-// mailimg.setAttribute("width", "50");
-// var maillink = document.createElement('a');
-// maillink.href = 'mailto:?subject=' + subjectline + '&amp;body=' + teaser(prediction1, prediction2);
-// maillink.appendChild(mailimg);
-// mailDiv.appendChild(maillink);
 
-// ///create Facebook link
-// var fbDiv = document.createElement('div');
-// fbDiv.setAttribute("height", "50");
-// fbDiv.setAttribute("width", "50");
-// var fbimg = document.createElement('img')
-// fbimg.src = 'fb.png' //for quick install, will want to do something better with URLs
-// fbimg.setAttribute("height", "50");
-// fbimg.setAttribute("width", "50");
-// var fblink = document.createElement('a');
-// fblink.href = 'https://www.facebook.com/sharer.php?u='+quizURL
-// fblink.appendChild(fbimg);
-// fbDiv.appendChild(fblink);
 
-// ///create twitter link
-// var twitterDiv = document.createElement('div');
-// twitterDiv.setAttribute("height", "50");
-// twitterDiv.setAttribute("width", "50");
-// var twitterimg = document.createElement('img')
-// twitterimg.src = 'twitter.png' //for quick install, will want to do something better with URLs
-// twitterimg.setAttribute("height", "50");
-// twitterimg.setAttribute("width", "50");
-// var twitterlink = document.createElement('a');
-// twitterlink.href = 'https://twitter.com/intent/tweet?url=' + quizURL + '&text=' + teaser(prediction1, prediction2);
-// twitterlink.appendChild(twitterimg);
-// twitterDiv.appendChild(twitterlink);
 
-// ///create weibo link
-// var weiboDiv = document.createElement('div');
-// weiboDiv.setAttribute("height", "50");
-// weiboDiv.setAttribute("width", "50");
-// var weiboimg = document.createElement('img')
-// weiboimg.src = 'weibo.png' //for quick install, will want to do something better with URLs
-// weiboimg.setAttribute("height", "50");
-// weiboimg.setAttribute("width", "50");
-// var weibolink = document.createElement('a');
-// weibolink.href = 'http://service.weibo.com/share/share.php?text=%E6%B5%8B%E8%AF%95&title=' teaser(prediction1, prediction2) + '&url=' + quizURL;
-// weibolink.appendChild(weiboimg);
-// weiboDiv.appendChild(weibolink);
+
+
+
+
 
 
 }
