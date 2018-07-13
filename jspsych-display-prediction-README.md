@@ -18,6 +18,14 @@ The following table lists the parameters associated with this plugin. Parameters
 |teaserPart2|string|empty string|Second part of the teaser text that will appear near the top of the page.
 |teaserPart3|string|empty string|Third part of the teaser text that will appear near the top of the page.
 |buttonText|string|'Finish'|The text displayed on the button which triggers end of trial. 
+|socialSharing|boolean|*undefined*|If set to true, the social media buttons will appear and the quiz taker will be able to share their results via email, facebook, twitter or weibo. If set to false, text encouraging the participant to fill out demographic questions will appear.
+|encourageDemographics|string|''|Text to encourage participants to answer demographic questions.
+|mailButtonImg|string|''|Path to image to be used for the mail button for social sharing.
+|fbButtonImg|string|''|Path to image to be used for the Facebook button for social sharing.
+|twitterButtonImg|string|''|Path to image to be used for the Twitter button for social sharing.
+|weiboButtonImg|string|''|Path to image to be used for the Weibo button for social sharing.
+
+
 
 ###Data Generated
 
@@ -46,14 +54,20 @@ var test = {
   prompt2:"Our top guesses for your dialect:",
   prediction1:['Some Guess 1', 'Some Guess 2', 'Some Guess 3'],
   prediction2:['Some Guess', 'Another Guess'],
-  buttonText:'Finish',
+  buttonText:'Continue',
   quizURL:'http://www.gameswithwords.org/WhichEnglish/',
   subjectLine: 'Mapping English grammar around the world.',
   teaserPart1: "I helped GamesWithWords.org train their algorithm to guess which English I speak (http://www.gameswithwords.org/WhichEnglish/). It guessed that I speak ",
-  teaserPart2:" and that my native language is ",
-  teaserPart3:". Which English do you speak?"
-
+  teaserPart2:". ",
+  teaserPart3:" is my dialect. Which English do you speak?",
+  socialSharing:false,
+  encourageDemographics: 'Please continue to answer some demographic questions and help us train our algorithm!',
+  mailButtonImg:`${baseUrl}/quizzes/email.png`,
+  fbButtonImg: `${baseUrl}/quizzes/fb.png`,
+  twitterButtonImg: `${baseUrl}/quizzes/twitter.png`,
+  weiboButtonImg: `${baseUrl}/quizzes/weibo.png`,
 }
+
 
 
 ```
@@ -61,8 +75,38 @@ var test = {
 produces:
 
 
+
+![alt text][logo2]
+
+[logo2]:  https://github.com/marielajennings/jspsych-display-prediction/raw/master/pic2.png
+
+
+while
+
+```
+var test = {
+  type:'display-prediction',
+  prompt1:"Our top guesses for your native language:",
+  prompt2:"Our top guesses for your dialect:",
+  prediction1:['Some Guess 1', 'Some Guess 2', 'Some Guess 3'],
+  prediction2:['Some Guess', 'Another Guess'],
+  buttonText:'Continue',
+  quizURL:'http://www.gameswithwords.org/WhichEnglish/',
+  subjectLine: 'Mapping English grammar around the world.',
+  teaserPart1: "I helped GamesWithWords.org train their algorithm to guess which English I speak (http://www.gameswithwords.org/WhichEnglish/). It guessed that I speak ",
+  teaserPart2:". ",
+  teaserPart3:" is my dialect. Which English do you speak?",
+  socialSharing:true,
+  encourageDemographics: 'Please continue to answer some demographic questions and help us train our algorithm!',
+  mailButtonImg:`${baseUrl}/quizzes/email.png`,
+  fbButtonImg: `${baseUrl}/quizzes/fb.png`,
+  twitterButtonImg: `${baseUrl}/quizzes/twitter.png`,
+  weiboButtonImg: `${baseUrl}/quizzes/weibo.png`,
+}
+
+```
+
+produces:
+
 ![alt text][logo]
 [logo]: https://github.com/marielajennings/jspsych-display-prediction/raw/master/pic1.png "Logo Title Text 2"
-
-
-
